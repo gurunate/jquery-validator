@@ -1,0 +1,9 @@
+body {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+}
+
+.input {
+	border: 1px solid black;
+	width: 300px;
+}

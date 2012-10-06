@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Validator - jQuery plugin</title>
+</head>
+
+<link type="text/css" rel="stylesheet" href="css/styles.css" />
+
+<!-- 
+<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+ -->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.14.custom.min.js"></script>
+<script type="text/javascript" src="js/jquery.validator.src.js"></script>
+
+<script type="text/javascript"> 
+$(function(){
+	$('#form1').validator();
+	
+	$('#form2').validator({
+		symbol: "&#9775;",
+		success: function(){
+			alert('Submit handled');
+		},
+		error: showErrors,
+		live: function(errors) {
+			if (errors.length) {
+				showErrors(errors);
+			} else {
+				$('#errors').html("");
+			}
+		},
+		required: {
+			color: 'red',
+			'font-weight': 'bold'
+		},
+		highlight: {
+			border: '1px dotted red'
+		},
+		footnote: "this is required."
+	});
+	
+	function showErrors(errors) {
+		var msg = "<p>You have some issues:</p><ul>";
+		for (var i=0; i<errors.length; i++) {
+			msg += "<li>" + errors[i].message + "</li>";
+		}
+		msg += "</ul>";
+		
+		$('#errors').html(msg);
+	}
+	
+	$('#form3').validator({
+		success: function(){
+			alert('Submit handled');
+			return false;
+		},
+		required: {
+			color: 'purple',
+			'font-weight': 'bold'
+		},
+		highlight: {
+			border: '1px dotted purple'
+		},
+		rules: [{
+			input: 'user_name',
+			when: 'live',
+			type: 'ajax',
+			url: '/ajax/validator.php',
+			success: function(){},
+			error: function(){}
+		}, 
+		{
+			input: [
+				'password',
+				'confirm'
+			],
+			oper: 'not equal',
+			success: function() {
+				alert('One small step for man.');
+			},
+			error: function(errors) {
+				alert(errors.message);
+			}
+		}]
+	});
+});
+
+</script>
+<body>
+
+<h1>Validator - jQuery plugin</h1>
+<p>The <em>validator</em> jQuery plugin was created to quickly and easily inline form values valication.</p>
+<h2>Download</h2>
+<ul>
+	<li>Source: <a href="js/jquery.validator.src.js">jquery.validator.src.js</a></li>
+	<li>Minimized: <a href="js/jquery.validator.min.js">jquery.validator.min.js</a></li>
+	<li>Minimize the source: <a href="http://reducisaurus.appspot.com/js?file=http://nate-dev.outfitters.com/jquery-plugins/validator/js/jquery.validator.src.js">jquery.validator.min.js</a></li>
+</ul>
+<h2>Examples</h2>
+<p>
+<h3>Basic validation</h3>
+<form id="form1">
+  <div>
+  <p><label for="name">Name</label><br />
+  <input type="text" name="name" value="" id="name" class="required" /></p>
+  <p><label for="comments">Comments</label><br />
+  <textarea name="comments" id="comments" class="required"></textarea></p>
+  <input type="submit" name="submit" value="Submit" />
+  </div>
+</form>
+</p>
+<p>
+<h3>Advanced validation</h3>
+<form id="form2">
+  <div id="errors"></div>
+  <table>
+    <tr>
+      <th><label for="subject">Subject</label></th>
+      <td><input type="text" name="subject" value="" id="subject" class="input required" /></td>
+    </tr>
+    <tr>
+      <th><label for="body">Body</label></th>
+      <td><textarea name="body" id="body" class="input required"></textarea></td>
+    </tr>
+    <td colspan="2"><input type="submit" name="submit" value="Submit" /></td>
+  </table>
+</form>
+<h3>Ruled validation</h3>
+<form id="form3">
+  <table>
+    <tr>
+      <th><label for="user_name">User name</label></th>
+      <td><input type="text" name="user_name" value="" id="user_name" class="input required" /></td>
+    </tr>
+    <tr>
+      <th><label for="password">Password</label></th>
+      <td><input type="password" name="password" value="" id="password" class="input required" /></td>
+    </tr>
+    <tr>
+      <th><label for="confirm">Confirm</label></th>
+      <td><input type="password" name="confirm" value="" id="confirm" class="input required" /></td>
+    </tr>
+    <td colspan="2"><input type="submit" name="submit" value="Submit" /></td>
+  </table>
+</form>
+</p>
+<h2>Dependencies</h2>
+<ul>
+	<li><a href="http://jquery.com/">jQuery</a></li>
+	<li><a href="http://jqueryui.com/">jQuery UI</a></li>
+</ul>
+<h2>Changelog</h2>
+<ul>
+</ul>
+</body>
+</html>
