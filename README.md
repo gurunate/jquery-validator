@@ -19,3 +19,6 @@ Quick and easy jQuery inline form validation.
 
 ### Methods ###
 
+| Key | Description |
+| - |:- |
+| $.validator.validate | Manually validates the form. |
