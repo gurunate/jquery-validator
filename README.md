@@ -2,23 +2,15 @@
 
 Quick and easy jQuery inline form validation.
 
-## API ##
+## Getting Started ##
 
-### Options ###
+* Install [NodeJS](http://nodejs.org/ "node.js")
+* Install [Grunt](http://gruntjs.com/ "Grunt")
+* Clone this project
+* Run ``npm install``
+* Run ``grunt`` to build
 
-| Key | Default value | Description |
-| - |:-:|:-|
-| submit | true | Toggle if Validator will validate on form submission.  |
+## Dependencies ##
 
-### Events ###
-
-| Key | Description |
-| - |:- |
-| success | Will be called once the Validator successfully validate the form. |
-| fail | Will be called when the Validator fails to validate the form. |
-
-### Methods ###
-
-| Key | Description |
-| - |:- |
-| $.validator.validate | Manually validates the form. |
+* [NodeJS](http://nodejs.org/ "node.js")
+* [Grunt](http://gruntjs.com/ "Grunt")
