@@ -3,6 +3,7 @@
  * Author: Nate Johnson
  * Version: 0.1.0 (Nov 2012)
  * Released under the MIT license
+ *
  */
 
 (function ($) {
@@ -93,7 +94,7 @@
 		}
 	});
 
-	function denote($form, $o) {
+	function denote($form, $o) { 
 		var hasRequired = false;
 		$form.find(':input.required').each(function () {
 			if ($(this).attr('id')) {
