@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		Remove this if you use the .htaccess -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<title>test</title>
+		<meta name="description" content="">
+		<meta name="author" content="njohnson">
+
+		<meta name="viewport" content="width=device-width; initial-scale=1.0">
+
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<link rel="shortcut icon" href="/favicon.ico">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+	</head>
+
+	<body>
+		<div>
+			<header>
+				<h1>test</h1>
+			</header>
+			<nav>
+				<p>
+					<a href="/">Home</a>
+				</p>
+				<p>
+					<a href="/contact">Contact</a>
+				</p>
+			</nav>
+
+			<div>
+				<form id="register">
+					<input type="text" name="first_name" value="" data-validator="required string(5,20)">
+					<input type="text" name="email" value="" data-validator="required email">
+				</form>
+			</div>
+			
+			<script src="jquery-validator.0.1.1.min.js"></script>
+			<script>
+			
+			$('form#register1').validator({
+				// bind : $('button').click(),
+				// rules : 'my-rules.json',
+				// helpers : {
+					// firstNameValid : function() {
+						// return boolean;
+					// }
+				// },
+				submit : false,
+				inline : true,
+				success : function() {
+					// TODO  whatever
+				},
+				fail: function(errors) {
+					$.each(errors, function(e) {
+						// TODO deal w/ it
+					});
+				}
+			});
+			
+			
+			
+			if ($('form#register2').validator().isValid()) {
+				// TODO the next thing
+			}
+			
+			$('form#register').validator().validate(function(errors){
+				// TODO deal with errors
+			});
+				
+			</script>
+
+			<footer>
+				<p>
+					&copy; Copyright  by njohnson
+				</p>
+			</footer>
+		</div>
+	</body>
+</html>

@@ -7,3 +7,9 @@ body {
 	border: 1px solid black;
 	width: 300px;
 }
+
+label {
+	display: inline-block;
+	width: 50px;
+	font-weight: bold;
+}
