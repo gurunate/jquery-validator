@@ -1,11 +1,7 @@
 {
   "name": "jquery-validator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A jQuery form validation plugin.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/gurunate/jquery-validator.git"
@@ -21,5 +17,6 @@
     "grunt-contrib-jasmine": "~0.5.2",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-uglify": "~0.2.2"
-  }
+  },
+  "private" : true
 }

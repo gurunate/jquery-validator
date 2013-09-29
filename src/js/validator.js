@@ -25,7 +25,14 @@
 				};
 
 				// implement user options				
-				this.options = $.extend(defaults, options);
+				_this.options = $.extend(defaults, options);
+				
+				/**
+				 * Embed options as element data to:
+				 * 1. Preserves options for API calls
+				 * 2. Denotes element as active validator participant
+				 */
+				$(this).data('validator', _this.options);
 
 				// plug-in magic below
 				return this.each(function() {
@@ -41,7 +48,7 @@
 				// API methods
 				switch (options) {
 					case 'validate':
-						return validate(this);
+						return validate((this));
 						break;
 
 					case 'errors':
@@ -59,6 +66,13 @@
 	 */
 	var validate = function (element) {
 		_this.errors = [];
+		_this.warnings = [];
+		_this.options = _this.options || element.data('validator');
+		
+		// add empty options warning
+		if (!_this.options) {
+			_this.warnings.push('No validator options.');
+		}
 						
 		// find all required inputs
 		element.find('[data-validator=required],[data-validator=phone],[data-validator=email]').each(function(i, el) {
@@ -97,10 +111,10 @@
 			});
 		}
 		
-		if (_this.errors.length && typeof _this.options.error === 'function') {
+		if (_this.errors.length && typeof _this.options.error !== 'undefined' && typeof _this.options.error === 'function') {
 			_this.options.error.call(_this, _this.errors);
 			
-		} else if (typeof _this.options.success === 'function') {
+		} else if (typeof _this.options.success !== 'undefined' && typeof _this.options.success === 'function') {
 			_this.options.success.call(_this);
 		}
 		return this;

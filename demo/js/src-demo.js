@@ -10,4 +10,5 @@ $(function() {
 		}
 	});
 	
+	$('form').validator('validate');
 });
