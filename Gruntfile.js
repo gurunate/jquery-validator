@@ -37,8 +37,10 @@ module.exports = function(grunt) {
 				}
 			},
 			scripts : {
-				files : ['**/*.styl'],
-				tasks : ['stylus'],
+				// files : ['**/*.styl'],
+				// tasks : ['stylus'],
+				files : ['**/*.styl', '**/*.js'],
+				tasks : ['build'],
 				options : {
 					spawn : false,
 				}
