@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 	var globalConfig = {
 		src : 'src',
 		dest : 'dist',
-		spec : 'tests'
+		spec : 'test'
 	};
 
 	if (grunt.file.exists('conf/jsHint.json')) {
@@ -54,7 +54,7 @@ module.exports = function(grunt) {
 			yourTask : {
 				src : '<%= globalConfig.src %>/js/**/*.js',
 				options : {
-					specs : '<%= globalConfig.spec %>/*Spec.js'
+					specs : '<%= globalConfig.spec %>/**/*.js'
 				}
 			}
 		},

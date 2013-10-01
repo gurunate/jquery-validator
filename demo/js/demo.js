@@ -11,4 +11,10 @@ $(function() {
 	});
 	
 	$('form').validator('validate');
+	
+	if ($('form').isValid()) {
+		console.log('Form is valid.');
+	} else {
+		console.log('Form is NOT valid.');
+	}
 });
