@@ -54,7 +54,8 @@ module.exports = function(grunt) {
 			yourTask : {
 				src : '<%= globalConfig.src %>/js/**/*.js',
 				options : {
-					specs : '<%= globalConfig.spec %>/**/*.js'
+					specs : '<%= globalConfig.spec %>/**/*.js',
+          keepRunner: true
 				}
 			}
 		},
