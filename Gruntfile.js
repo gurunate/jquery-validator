@@ -55,7 +55,7 @@ module.exports = function(grunt) {
 				src : '<%= globalConfig.src %>/js/**/*.js',
 				options : {
 					specs : '<%= globalConfig.spec %>/**/*.js',
-          keepRunner: true
+					keepRunner: true
 				}
 			}
 		},

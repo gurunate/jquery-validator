@@ -6,15 +6,17 @@ $(function() {
 			console.debug('form is valid');
 		},
 		error : function(errors) {
-			console.debug('we have errors', errors);
+			$.each(errors, function(i, er){
+				$(er.el).css('border', '1px solid red');
+			});
 		}
 	});
 	
-	$('form').validator('validate');
-	
-	if ($('form').isValid()) {
-		console.log('Form is valid.');
-	} else {
-		console.log('Form is NOT valid.');
-	}
+	// $('form').validator('validate');
+// 	
+	// if ($('form').isValid()) {
+		// console.log('Form is valid.');
+	// } else {
+		// console.log('Form is NOT valid.');
+	// }
 });

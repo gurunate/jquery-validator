@@ -6,19 +6,23 @@
  * @license Released under the MIT license
  */
 
+
 (function($) {
 	'use strict';
 	
 	var _this;
+	
 
 	$.fn.extend({
 		validator : function(options) {
 			_this = this;
+			_this.hasValidated = _this.hasValidated || false;
 			
 			if (typeof options === 'object' || typeof options === 'undefined') {
 				
 				// default options
 				var defaults = {
+					debug : null,
 					submit : true,
 					success : null,
 					error : null
@@ -48,7 +52,7 @@
 				// API methods
 				switch (options) {
 					case 'validate':
-						return _this.validate((this));
+						return _this.validate(this);
 						break;
 
 					case 'errors':
@@ -62,7 +66,6 @@
 				this.validate($(this));
 			}
 			
-			console.debug(_this.errors);
 			return (_this.errors.length <= 0);
 		},
 		/**
@@ -71,6 +74,10 @@
 		 * @return {Array} errors 
 		 */
 		getErrors : function () {
+			if (!_this.hasValidated) {
+				console.warn('Errors called before validated.  Validating...');
+				_this.validate(this);	
+			}
 			return _this.errors;
 		},
 		/**
@@ -79,6 +86,7 @@
 		 * @param {Object} element Target plugin element  
 		 */
 		validate : function (element) {
+			_this.hasValidated = true;
 			_this.errors = [];
 			_this.warnings = [];
 			_this.options = _this.options || element.data('validator');
@@ -93,7 +101,6 @@
 				if ($(el).val() === '') {
 					_this.errors.push({
 						msg : 'Required field.',
-						name : $(el).attr('name'),
 						el : el
 					});
 				}
@@ -125,11 +132,13 @@
 				});
 			}
 			
-			if (_this.errors.length && typeof _this.options.error !== 'undefined' && typeof _this.options.error === 'function') {
-				_this.options.error.call(_this, _this.errors);
-				
-			} else if (typeof _this.options.success !== 'undefined' && typeof _this.options.success === 'function') {
-				_this.options.success.call(_this);
+			if (typeof _this.options !== 'undefined') {
+				if (_this.errors.length && typeof _this.options.error !== 'undefined' && typeof _this.options.error === 'function') {
+					_this.options.error.call(_this, _this.errors);
+					
+				} else if (typeof _this.options.success !== 'undefined' && typeof _this.options.success === 'function') {
+					_this.options.success.call(_this);
+				}
 			}
 			return this;
 		}
