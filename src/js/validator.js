@@ -22,7 +22,7 @@
 				
 				// default options
 				var defaults = {
-					debug : null,
+					mode : 'prod',
 					submit : true,
 					success : null,
 					error : null
@@ -75,9 +75,12 @@
 		 */
 		getErrors : function () {
 			if (!_this.hasValidated) {
-				console.warn('Errors called before validated.  Validating...');
-				_this.validate(this);	
+				if (_this.options.mode === 'dev') {
+					console.warn('Errors called before validated.  Validating...');
+				}
+				_this.validate(this);
 			}
+			
 			return _this.errors;
 		},
 		/**
