@@ -78,7 +78,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 
-	grunt.registerTask('build', ['stylus', 'uglify']);
+	grunt.registerTask('build', ['jasmine', 'stylus', 'uglify']);
 	grunt.registerTask('test', ['jasmine']);
 	grunt.registerTask('default', ['build']);
 };
