@@ -152,7 +152,7 @@
 			
 			if (!_this.errors.length) {
 				// find & validate all URL inputs
-				element.find('[data-validator*=url]').each(function(i, el) {
+				element.find('[data-validator~=url]').each(function(i, el) {
 					if ($(el).attr('data-validator').match('required') && isValidURL($(el).val()) || 
 						($(el).val() && isValidURL($(el).val()))) {
 						_this.errors.push({
