@@ -12,18 +12,20 @@ describe("Phone Type Field Validation", function() {
 		fixture = $('<form></form>');
 	});
 	
-	it("phone number should be a valid without formatting", function() {
-		fixture.append('<input type="tel" name="phone" value="1234567890" data-validator="phone" />');
+	it("phone number should be required and valid without formatting", function() {
+		fixture.append('<input type="tel" name="phone" value="1234567890" data-validator="required phone" />');
+		
 		fixture.validator('validate');
+		
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
-	it("phone number should be a valid with formatting", function() {
+	it("phone number should be required and valid with formatting", function() {
 		fixture.append(
-			'"<input type="tel" name="phone1" value="555-555-5555" data-validator="phone" />' +
-			'"<input type="tel" name="phone2" value="555.555.5555" data-validator="phone" />' +
-			'"<input type="tel" name="phone4" value="(555) 555-5555" data-validator="phone" />' +
-			'"<input type="tel" name="phone4" value="555 555 5555" data-validator="phone" />'
+			'"<input type="tel" name="phone1" value="555-555-5555" data-validator="required phone" />' +
+			'"<input type="tel" name="phone2" value="555.555.5555" data-validator="required phone" />' +
+			'"<input type="tel" name="phone3" value="(555) 555-5555" data-validator="required phone" />' +
+			'"<input type="tel" name="phone4" value="555 555 5555" data-validator="required phone" />'
 		);
 		
 		fixture.validator('validate');
@@ -31,12 +33,23 @@ describe("Phone Type Field Validation", function() {
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
-	it("wrong phone number should not be a valid", function() {
+	it("wrong phone number should be required but not be valid", function() {
 		fixture.append(
-			'"<input type="tel" name="phone1" value="555-555-555" data-validator="phone" />' +
-			'"<input type="tel" name="phone2" value="abc-555.5555" data-validator="phone" />' +
-			'"<input type="tel" name="phone3" value="1234567" data-validator="phone" />' +
-			'"<input type="tel" name="phone4" value="+1 (800) 555-5555" data-validator="phone" />'
+			'"<input type="tel" name="phone1" value="555-555-555" data-validator="required phone" />' +
+			'"<input type="tel" name="phone2" value="abc-555.5555" data-validator="required phone" />' +
+			'"<input type="tel" name="phone3" value="1234567" data-validator="required phone" />' +
+			'"<input type="tel" name="phone4" value="+1 (800) 555-5555" data-validator="required phone" />'
+		);
+		
+		fixture.validator('validate');
+		
+		expect(fixture.validator('errors').length).toBeGreaterThan(0);
+	});
+	
+	it("phone number should be optional but valid when present", function() {
+		fixture.append(
+			'"<input type="tel" name="phone1" value="" data-validator="phone" />' +
+			'"<input type="tel" name="phone2" value="555-555-5555" data-validator="phone" />'
 		);
 		
 		fixture.validator('validate');
