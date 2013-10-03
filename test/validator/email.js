@@ -32,18 +32,27 @@ describe("Email Type Field Validation", function() {
 
   it("email should be required and invalid", function() {
     elOptions.value = 'usergooglecom';
-
     var l = $('<input/>',elOptions);
     fixture.append(l);
     fixture.validator('validate');
-
     expect(fixture.validator('errors').length).not.toEqual(0);
   });
 
+  it("email should NOT be required and valid", function() { 
+    elOptions['data-validator'] = 'email';
+    var l = $('<input/>',elOptions);
+    fixture.append(l);
+    fixture.validator('validate');
+    expect(fixture.validator('errors').length).toEqual(0);
+  });
 
-  
-  // it("email should NOT be required and valid", function() { });
-
-  // it("email should NOT be required and invalid", function() { });
+  it("email should NOT be required and invalid", function() { 
+    elOptions['data-validator'] = '';
+    elOptions.value = 'usergooglecom';
+    var l = $('<input/>',elOptions);
+    fixture.append(l);
+    fixture.validator('validate');
+    expect(fixture.validator('errors').length).toEqual(0);
+  });
  
 });
