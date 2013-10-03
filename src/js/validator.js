@@ -11,7 +11,6 @@
 	'use strict';
 	
 	var _this;
-	
 
 	$.fn.extend({
 		validator : function(options) {
@@ -100,7 +99,7 @@
 			}
 							
 			// find all required inputs
-			element.find('[data-validator*=required]').each(function(i, el) {
+			element.find('[data-validator~=required]').each(function(i, el) {
 				
 				if ($(el).attr('type') === 'checkbox' || $(el).attr('type') === 'radio') {
 					var hasChecked = false;
@@ -126,7 +125,7 @@
 			
 			if (!_this.errors.length) {
 				// find & validate all phone inputs
-				element.find('[data-validator*=phone]').each(function(i, el) {
+				element.find('[data-validator~=phone]').each(function(i, el) {
 					if (isValidPhoneNumber($(el).val())) {
 						_this.errors.push({
 							msg : 'Invalid phone number',
@@ -138,7 +137,7 @@
 				
 			if (!_this.errors.length) {
 				// find & validate all email inputs
-				element.find('[data-validator*=email]').each(function(i, el) {
+				element.find('[data-validator~=email]').each(function(i, el) {
 					if (isValidateEmailAddress($(el).val())) {
 						_this.errors.push({
 							msg : 'Invalid email address',
