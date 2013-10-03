@@ -33,7 +33,7 @@ describe("Phone Type Field Validation", function() {
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
-	it("wrong phone number should be required but not be valid", function() {
+	it("wrong phone number should be required and invalid", function() {
 		fixture.append(
 			'"<input type="tel" name="phone1" value="555-555-555" data-validator="required phone" />' +
 			'"<input type="tel" name="phone2" value="abc-555.5555" data-validator="required phone" />' +
@@ -49,7 +49,7 @@ describe("Phone Type Field Validation", function() {
 	it("phone number should be optional but valid when present", function() {
 		fixture.append(
 			'"<input type="tel" name="phone1" value="" data-validator="phone" />' +
-			'"<input type="tel" name="phone2" value="555-555-5555" data-validator="phone" />'
+			'"<input type="tel" name="phone2" value="555-555-5555a" data-validator="phone" />'
 		);
 		
 		fixture.validator('validate');

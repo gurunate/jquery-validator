@@ -126,7 +126,9 @@
 			if (!_this.errors.length) {
 				// find & validate all phone inputs
 				element.find('[data-validator~=phone]').each(function(i, el) {
-					if (isValidPhoneNumber($(el).val())) {
+					if ($(el).attr('data-validator').match('required') && isValidPhoneNumber($(el).val()) || 
+						($(el).val() && isValidPhoneNumber($(el).val()))) {
+					
 						_this.errors.push({
 							msg : 'Invalid phone number',
 							el : el
@@ -138,7 +140,8 @@
 			if (!_this.errors.length) {
 				// find & validate all email inputs
 				element.find('[data-validator~=email]').each(function(i, el) {
-					if (isValidateEmailAddress($(el).val())) {
+					if ($(el).attr('data-validator').match('required') && isValidateEmailAddress($(el).val()) || 
+						($(el).val() && isValidateEmailAddress($(el).val()))) {
 						_this.errors.push({
 							msg : 'Invalid email address',
 							el : el
@@ -150,7 +153,8 @@
 			if (!_this.errors.length) {
 				// find & validate all URL inputs
 				element.find('[data-validator*=url]').each(function(i, el) {
-					if (isValidURL($(el).val())) {
+					if ($(el).attr('data-validator').match('required') && isValidURL($(el).val()) || 
+						($(el).val() && isValidURL($(el).val()))) {
 						_this.errors.push({
 							msg : 'Invalid URL',
 							el : el
