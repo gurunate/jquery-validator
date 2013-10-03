@@ -10,6 +10,16 @@ body {
 
 label {
 	display: inline-block;
-	width: 50px;
+	width: 120px;
 	font-weight: bold;
+	vertical-align: top;
+	padding-top: 5px;
+	text-align: right;
+}
+
+label.checkbox {
+	width: auto;
+	font-weight: normal;
+	padding-top: 2px;
+	text-align: left;
 }

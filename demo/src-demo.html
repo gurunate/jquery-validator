@@ -43,12 +43,38 @@
 						<input type="text" name="name" id="name" value="" data-validator="required">
 					</p>
 					<p>
-						<label for="phone">Phone</label>
-						<input type="text" name="phone" id="phone" value="" data-validator="phone">
+						<label for="address">Address</label>
+						<textarea name="address" id="address" data-validator="required"></textarea>
 					</p>
 					<p>
-						<label for="email">Email</label>
-						<input type="text" name="email" id="email" value="" data-validator="email">
+						<label for="phone">Phone</label>
+						<input type="text" name="phone" id="phone" value="" data-validator="required phone">
+					</p>
+					<p>
+						<label for="email1">Primary email</label>
+						<input type="text" name="email1" id="email1" value="" data-validator="required email">
+					</p>
+					<p>
+						<label for="email2">Secondary email</label>
+						<input type="email" name="email2" id="email2" value="" data-validator="email">
+					</p>
+					<p>
+						<label for="website">Website</label>
+						<input type="text" name="website" id="website" value="" data-validator="required url">
+					</p>
+					<p>
+					<p>
+						<label for="contact">Contact me by</label>
+						<input type="checkbox" name="contact" id="contact:phone" value="phone" data-validator="required"> <label for="contact:phone" class="checkbox">phone</label>
+						<input type="checkbox" name="contact" id="contact:email" value="email"> <label for="contact:email" class="checkbox">email</label>
+					</p>
+					<p>
+						<label for="citizen">U.S. Citizen?</label>
+						<input type="radio" name="citizen" id="citizen:yes" value="yes" data-validator="required"> <label for="citizen:yes" class="checkbox">yes</label>
+						<input type="radio" name="citizen" id="citizen:no" value="no"> <label for="citizen:no" class="checkbox">no</label>
+					</p>
+					<p>
+						<input type="checkbox" name="terms" id="terms" value="yes" data-validator="email"> <label for="terms" class="checkbox">Do you accept the terms of service?</label>
 					</p>
 					<p>
 						<button name="button" value="submit">Submit</button>

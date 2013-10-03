@@ -100,10 +100,25 @@
 			}
 							
 			// find all required inputs
-			element.find('[data-validator=required],[data-validator=phone],[data-validator=email]').each(function(i, el) {
-				if ($(el).val() === '') {
+			element.find('[data-validator*=required]').each(function(i, el) {
+				
+				if ($(el).attr('type') === 'checkbox' || $(el).attr('type') === 'radio') {
+					var hasChecked = false;
+					$(el).parent().find('[name=' + $(el).attr('name') + ']').each(function(i, el) {
+						if (!hasChecked && $(el).is(':checked')) {
+							hasChecked = true;
+						}
+					});
+					
+					if (!hasChecked) {
+						_this.errors.push({
+							msg : 'Required field',
+							el : el
+						});
+					}
+				} else if ($(el).val() === '') {
 					_this.errors.push({
-						msg : 'Required field.',
+						msg : 'Required field',
 						el : el
 					});
 				}
@@ -111,11 +126,10 @@
 			
 			if (!_this.errors.length) {
 				// find & validate all phone inputs
-				element.find('[data-validator=phone]').each(function(i, el) {
+				element.find('[data-validator*=phone]').each(function(i, el) {
 					if (isValidPhoneNumber($(el).val())) {
 						_this.errors.push({
-							msg : 'Invalid phone number.',
-							name : $(el).attr('name'),
+							msg : 'Invalid phone number',
 							el : el
 						});
 					}
@@ -124,11 +138,22 @@
 				
 			if (!_this.errors.length) {
 				// find & validate all email inputs
-				element.find('[data-validator=email]').each(function(i, el) {
+				element.find('[data-validator*=email]').each(function(i, el) {
 					if (isValidateEmailAddress($(el).val())) {
 						_this.errors.push({
-							msg : 'Invalid email address.',
-							name : $(el).attr('name'),
+							msg : 'Invalid email address',
+							el : el
+						});
+					}
+				});
+			}
+			
+			if (!_this.errors.length) {
+				// find & validate all URL inputs
+				element.find('[data-validator*=url]').each(function(i, el) {
+					if (isValidURL($(el).val())) {
+						_this.errors.push({
+							msg : 'Invalid URL',
 							el : el
 						});
 					}
@@ -155,7 +180,6 @@
 	 * @return {Boolean} validity status
 	 */
 	var isValidPhoneNumber = function (val) {
-		// http://blog.stevenlevithan.com/archives/validate-phone-number
 		var pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 		return !pattern.test(val);
 	};
@@ -169,6 +193,18 @@
 	 */
 	var isValidateEmailAddress = function (val) {
 		var pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+		return !pattern.test(val);
+	};
+	
+	/**
+	 * Telephone number validation.
+	 * 
+	 * @param {Object} val Input value
+	 * 
+	 * @return {Boolean} validity status
+	 */
+	var isValidURL = function (val) {
+		var pattern = new RegExp("(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?");
 		return !pattern.test(val);
 	};
 

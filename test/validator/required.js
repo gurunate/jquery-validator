@@ -35,15 +35,6 @@ describe("Required Field Validation", function() {
 		expect(fixture.validator('errors').length).not.toBeGreaterThan(0);
 	});
 	
-	/**
-	 * TODO:
-	 * 
-	 * 1. checkboxes
-	 * 2. textarea
-	 * 3. radio buttons
-	 *  
-	 */
-	
 	it("a checkbox field should be required", function() {
 		fixture.append(
 			'"<input type="checkbox" name="color" value="red" data-validator="required" />' +
@@ -52,13 +43,13 @@ describe("Required Field Validation", function() {
 			'"<input type="checkbox" name="color" value="yellow" />'
 		);
 		fixture.validator('validate');
-		expect(fixture.validator('errors').length).isEqual(0);
+		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
 	it("checkbox field should be required", function() {
 		fixture.append('"<input type="checkbox" name="terms" value="yes" data-validator="required" checked />');
 		fixture.validator('validate');
-		expect(fixture.validator('errors').length).isEqual(0);
+		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
 	it("a checkbox field should not be required", function() {
@@ -69,7 +60,35 @@ describe("Required Field Validation", function() {
 			'"<input type="checkbox" name="color" value="yellow" />'
 		);
 		fixture.validator('validate');
-		expect(fixture.validator('errors').length).isEqual(0);
+		expect(fixture.validator('errors').length).toEqual(0);
+	});
+	
+	it("a radio field should be required", function() {
+		fixture.append(
+			'"<input type="checkbox" name="color" value="red" data-validator="required" />' +
+			'"<input type="checkbox" name="color" value="blue" />' +
+			'"<input type="checkbox" name="color" value="green" checked />' +
+			'"<input type="checkbox" name="color" value="yellow" />'
+		);
+		fixture.validator('validate');
+		expect(fixture.validator('errors').length).toEqual(0);
+	});
+	
+	it("radio field should be required", function() {
+		fixture.append('"<input type="checkbox" name="terms" value="yes" data-validator="required" checked />');
+		fixture.validator('validate');
+		expect(fixture.validator('errors').length).toEqual(0);
+	});
+	
+	it("a radio field should not be required", function() {
+		fixture.append(
+			'"<input type="checkbox" name="color" value="red" />' +
+			'"<input type="checkbox" name="color" value="blue" />' +
+			'"<input type="checkbox" name="color" value="green" />' +
+			'"<input type="checkbox" name="color" value="yellow" />'
+		);
+		fixture.validator('validate');
+		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
 });

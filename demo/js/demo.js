@@ -6,6 +6,7 @@ $(function() {
 			console.debug('form is valid');
 		},
 		error : function(errors) {
+			console.debug(errors);
 			$.each(errors, function(i, er){
 				$(er.el).css('border', '1px solid red');
 			});
