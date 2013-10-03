@@ -4,12 +4,14 @@
  * @author Nate Johnson
  */
 
-describe(" test required", function() {
-	it(" can required field", function() {
-		// var calc = new Calculator;
-		// expect(calc.add(2, 3)).toEqual(5);
-		// expect(calc.sub(8, 5)).toEqual(3);
-		// expect(calc.mult(4, 3)).toEqual(12);
-		// expect(calc.div(12, 4)).toEqual(3);
+describe("required field validation", function() {
+	it("should be a required field", function() {
+		var fixture = $('<form>"' +
+			'"<input type="text" name="name" value="Bill Smith" data-validator="required" />' +
+			'</form>');
+		
+		fixture.validator('validate');
+		
+		expect(fixture.validator('errors').length).toBe(0);
 	});
 });
