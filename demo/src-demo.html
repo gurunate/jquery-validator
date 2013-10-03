@@ -47,6 +47,10 @@
 						<textarea name="address" id="address" data-validator="required"></textarea>
 					</p>
 					<p>
+						<label for="zip">Zip code</label>
+						<input type="tel" name="zip" id="zip" value="" data-validator="required zip">
+					</p>
+					<p>
 						<label for="phone">Phone</label>
 						<input type="text" name="phone" id="phone" value="" data-validator="required phone">
 					</p>
@@ -74,7 +78,7 @@
 						<input type="radio" name="citizen" id="citizen:no" value="no"> <label for="citizen:no" class="checkbox">no</label>
 					</p>
 					<p>
-						<input type="checkbox" name="terms" id="terms" value="yes" data-validator="email"> <label for="terms" class="checkbox">Do you accept the terms of service?</label>
+						<input type="checkbox" name="terms" id="terms" value="yes" data-validator="required"> <label for="terms" class="checkbox">Do you accept the terms of service?</label>
 					</p>
 					<p>
 						<button name="button" value="submit">Submit</button>

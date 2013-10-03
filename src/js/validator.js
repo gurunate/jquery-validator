@@ -163,6 +163,19 @@
 				});
 			}
 			
+			if (!_this.errors.length) {
+				// find & validate all zip code inputs
+				element.find('[data-validator~=zip]').each(function(i, el) {
+					if ($(el).attr('data-validator').match('required') && isValidZipCode($(el).val()) || 
+						($(el).val() && isValidZipCode($(el).val()))) {
+						_this.errors.push({
+							msg : 'Invalid zip code',
+							el : el
+						});
+					}
+				});
+			}
+			
 			if (typeof _this.options !== 'undefined') {
 				if (_this.errors.length && typeof _this.options.error !== 'undefined' && typeof _this.options.error === 'function') {
 					_this.options.error.call(_this, _this.errors);
@@ -183,24 +196,27 @@
 	 * @return {Boolean} validity status
 	 */
 	var isValidPhoneNumber = function (val) {
-		var pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+		var pattern = new RegExp('^(([0-9]{1})*[- .(]*([0-9]{3})[- .)]*[0-9]{3}[- .]*[0-9]{4})+$');
 		return !pattern.test(val);
 	};
 	
 	/**
 	 * Email address validation.
 	 * 
+	 * This email regex is not fully RFC5322-compliant, but it will validate most 
+	 * common email address formats correctly.
+	 * 
 	 * @param {Object} val Input value
 	 * 
 	 * @return {Boolean} validity status
 	 */
 	var isValidateEmailAddress = function (val) {
-		var pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+		var pattern = new RegExp('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
 		return !pattern.test(val);
 	};
 	
 	/**
-	 * Telephone number validation.
+	 * URL validation.
 	 * 
 	 * @param {Object} val Input value
 	 * 
@@ -208,6 +224,47 @@
 	 */
 	var isValidURL = function (val) {
 		var pattern = new RegExp("(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?");
+		return !pattern.test(val);
+	};
+	
+	/**
+	 * Zip code validation.
+	 * 
+	 * @param {Object} val Input value
+	 * 
+	 * @return {Boolean} validity status
+	 */
+	var isValidZipCode = function (val) {
+		var pattern = new RegExp('^[0-9]{5}(?:-[0-9]{4})?$');
+		return !pattern.test(val);
+	};
+	
+	/**
+	 * Password validation.
+	 * 
+	 * Test for a strong password with this regex. The password must contain one lowercase 
+	 * letter, one uppercase letter, one number, and be at least 6 characters long.
+	 * 
+	 * @param {Object} val Input value
+	 * 
+	 * @return {Boolean} validity status
+	 */
+	var isValidPassword = function (val) {
+		var pattern = new RegExp("(?=^.{6,}$)((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.*");
+		return !pattern.test(val);
+	};
+	
+	/**
+	 * Digits validation.
+	 * 
+	 * This regex will test for digits (whole numbers).
+	 * 
+	 * @param {Object} val Input value
+	 * 
+	 * @return {Boolean} validity status
+	 */
+	var isValidDigits = function (val) {
+		var pattern = new RegExp('^[0-9]+$');
 		return !pattern.test(val);
 	};
 
