@@ -46,9 +46,9 @@ describe("Email Type Field Validation", function() {
     expect(fixture.validator('errors').length).toEqual(0);
   });
 
-  it("email should NOT be required and invalid", function() { 
-    elOptions['data-validator'] = '';
-    elOptions.value = 'usergooglecom';
+  it("email should NOT be required and empty (optional)", function() {
+    elOptions['data-validator'] = 'email';
+    delete elOptions.value;
     var l = $('<input/>',elOptions);
     fixture.append(l);
     fixture.validator('validate');
