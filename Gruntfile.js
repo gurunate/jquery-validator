@@ -61,11 +61,13 @@ module.exports = function(grunt) {
 		},
 		uglify : {
 			options : {
-				mangle : false
+				mangle : false,
+				banner : '/**\n * <%= pkg.name %> - <%= pkg.description %>\n * \n * @version <%= pkg.version %>\n * @author <%= pkg.author %>\n * @license MIT\n */\n\n'
 			},
 			my_target : {
 				files : {
-					'<%= globalConfig.dest %>/js/<%= pkg.name %>-<%= pkg.version %>.min.js' : '<%= globalConfig.src %>/js/**/*.js'
+					// '<%= globalConfig.dest %>/js/<%= pkg.name %>-<%= pkg.version %>.min.js' : '<%= globalConfig.src %>/js/**/*.js'
+					'<%= globalConfig.dest %>/js/<%= pkg.name %>-<%= pkg.version %>.min.js' : '<%= globalConfig.src %>/js/validator.js'
 				}
 			}
 		}
