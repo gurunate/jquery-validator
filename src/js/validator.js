@@ -10,8 +10,39 @@
 (function($) {
 	'use strict';
 	
-	var _this;
+	var _this,
+		types = {
+			phone : {
+				msg : 'Phone number is invalid.',
+				pattern : '^(([0-9]{1})*[- .(]*([0-9]{3})[- .)]*[0-9]{3}[- .]*[0-9]{4})+$'
+			},
+			email : {
+				msg : 'Email address is invalid.',
+				pattern : '^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$'
+			},
+			url : {
+				msg : 'URL is invalid.',
+				pattern : "(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?"
+			},
+			zip : {
+				msg : 'Zip code is invalid.',
+				pattern : '^[0-9]{5}(?:-[0-9]{4})?$'
+			},
+			password : {
+				msg : 'Password is invalid.',
+				pattern : "(?=^.{6,}$)((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.*"
+			},
+			digits : {
+				msg : 'Digits are invalid.',
+				pattern : '^[0-9]+$'
+			},
+			ssn : {
+				msg : 'Social Security Number is invalid.',
+				pattern : '/^([0-9]{3}[-]*[0-9]{2}[-]*[0-9]{4})*$/'
+			}
+		};
 
+	// plugin implementation
 	$.fn.extend({
 		validator : function(options) {
 			_this = this;
@@ -75,7 +106,7 @@
 		getErrors : function () {
 			if (!_this.hasValidated) {
 				if (_this.options.mode === 'dev') {
-					console.warn('Errors called before validated.  Validating...');
+					console.warn('Errors method referenced before any validation.  Validation invoked for accuracy.');
 				}
 				_this.validate(this);
 			}
@@ -83,9 +114,9 @@
 			return _this.errors;
 		},
 		/**
-		 * Validates the  
+		 * Validates the element
 		 *
-		 * @param {Object} element Target plugin element  
+		 * @param {Object} element Target DOM element  
 		 */
 		validate : function (element) {
 			_this.hasValidated = true;
@@ -97,98 +128,41 @@
 			if (!_this.options) {
 				_this.warnings.push('No validator options.');
 			}
-							
-			// find all required inputs
-			element.find('[data-validator~=required]').each(function(i, el) {
+			
+			// iterate over all validator input fields
+			element.find('[data-validator]').each(function(i, el) {
+				var rules = $(el).attr('data-validator').split(' ');
+				el.isRequired = false;
 				
-				if ($(el).attr('type') === 'checkbox' || $(el).attr('type') === 'radio') {
-					var hasChecked = false;
-					$(el).parent().find('[name=' + $(el).attr('name') + ']').each(function(i, el) {
-						if (!hasChecked && $(el).is(':checked')) {
-							hasChecked = true;
-						}
-					});
+				// validate required fields
+				if (rules.indexOf('required') >= 0) {
+					el.isRequired = true;
 					
-					if (!hasChecked) {
+					if (!isValidValue(el)) {
 						_this.errors.push({
 							msg : 'Required field',
 							el : el
 						});
 					}
-				} else if ($(el).val() === '') {
-					_this.errors.push({
-						msg : 'Required field',
-						el : el
-					});
 				}
-			});
-			
-			if (!_this.errors.length) {
-				// find & validate all phone inputs
-				element.find('[data-validator~=phone]').each(function(i, el) {
-					if ($(el).attr('data-validator').match('required') && isValidPhoneNumber($(el).val()) || 
-						($(el).val() && isValidPhoneNumber($(el).val()))) {
-					
-						_this.errors.push({
-							msg : 'Invalid phone number',
-							el : el
-						});
-					}
-				});
-			}
 				
-			if (!_this.errors.length) {
-				// find & validate all email inputs
-				element.find('[data-validator~=email]').each(function(i, el) {
-					if ($(el).attr('data-validator').match('required') && isValidateEmailAddress($(el).val()) || 
-						($(el).val() && isValidateEmailAddress($(el).val()))) {
-						_this.errors.push({
-							msg : 'Invalid email address',
-							el : el
-						});
+				// validate field types
+				$.each(rules, function(i, r) {
+					// skip required validation, already prioritized
+					if (r !== 'required') {
+						if ((el.isRequired && !isValidType(r, el)) || 
+							(isValidValue(el) && !isValidType(r, el))) { 
+							_this.errors.push({
+								msg : types[r].msg,
+								el : el
+							});
+						}
 					}
 				});
-			}
-			
-			if (!_this.errors.length) {
-				// find & validate all URL inputs
-				element.find('[data-validator~=url]').each(function(i, el) {
-					if ($(el).attr('data-validator').match('required') && isValidURL($(el).val()) || 
-						($(el).val() && isValidURL($(el).val()))) {
-						_this.errors.push({
-							msg : 'Invalid URL',
-							el : el
-						});
-					}
-				});
-			}
-			
-			if (!_this.errors.length) {
-				// find & validate all zip code inputs
-				element.find('[data-validator~=zip]').each(function(i, el) {
-					if ($(el).attr('data-validator').match('required') && isValidZipCode($(el).val()) || 
-						($(el).val() && isValidZipCode($(el).val()))) {
-						_this.errors.push({
-							msg : 'Invalid zip code',
-							el : el
-						});
-					}
-				});
-			}
-			
-			if (!_this.errors.length) {
-				// find & validate all password inputs
-				element.find('[data-validator~=password]').each(function(i, el) {
-					if ($(el).attr('data-validator').match('required') && isValidPassword($(el).val()) || 
-						($(el).val() && isValidPassword($(el).val()))) {
-						_this.errors.push({
-							msg : 'Invalid password',
-							el : el
-						});
-					}
-				});
-			}
-			
+				
+			});
+
+			// invoke callbacks
 			if (typeof _this.options !== 'undefined') {
 				if (_this.errors.length && typeof _this.options.error !== 'undefined' && typeof _this.options.error === 'function') {
 					_this.options.error.call(_this, _this.errors);
@@ -202,98 +176,43 @@
 	});
 	
 	/**
-	 * Telephone number validation.
+	 * Value validation.
 	 * 
-	 * @param {Object} val Input value
+	 * @param {Object} el Input field
 	 * 
 	 * @return {Boolean} validity status
 	 */
-	var isValidPhoneNumber = function (val) {
-		// This regex will validate a 10-digit North American telephone number. Separators 
-		// are not required, but can include spaces, hyphens, or periods. Parentheses 
-		// around the area code are also optional.
-		var pattern = new RegExp('^(([0-9]{1})*[- .(]*([0-9]{3})[- .)]*[0-9]{3}[- .]*[0-9]{4})+$');
-		return !pattern.test(val);
+	var isValidValue = function (el) {
+		var retval = true;
+		
+		if ($(el).attr('type') === 'checkbox' || $(el).attr('type') === 'radio') {
+			var hasChecked = false;
+			$(el).parent().find('[name=' + $(el).attr('name') + ']').each(function(i, el) {
+				if (!hasChecked && $(el).is(':checked')) {
+					hasChecked = true;
+				}
+			});
+			
+			if (!hasChecked) {
+				retval = false;
+			}
+		} else if ($(el).val() === '') {
+			retval = false;
+		}
+		return retval;
 	};
 	
 	/**
-	 * Email address validation.
+	 * Type validation.
 	 * 
-	 * @param {Object} val Input value
-	 * 
-	 * @return {Boolean} validity status
-	 */
-	var isValidateEmailAddress = function (val) {
-		// This email regex is not fully RFC5322-compliant, but it will validate most 
-		// common email address formats correctly.
-		var pattern = new RegExp('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
-		return !pattern.test(val);
-	};
-	
-	/**
-	 * URL validation.
-	 * 
-	 * @param {Object} val Input value
+	 * @param {Object} type Input type
+	 * @param {Object} el Input field
 	 * 
 	 * @return {Boolean} validity status
 	 */
-	var isValidURL = function (val) {
-		// This URL regex will validate most common URL formats correctly.
-		var pattern = new RegExp("(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?");
-		return !pattern.test(val);
-	};
-	
-	/**
-	 * Zip code validation.
-	 * 
-	 * @param {Object} val Input value
-	 * 
-	 * @return {Boolean} validity status
-	 */
-	var isValidZipCode = function (val) {
-		// This regexp verifies US ZIP Codes, with an optional 4 number ZIP code extension.
-		var pattern = new RegExp('^[0-9]{5}(?:-[0-9]{4})?$');
-		return !pattern.test(val);
-	};
-	
-	/**
-	 * Password validation.
-	 * 
-	 * @param {Object} val Input value
-	 * 
-	 * @return {Boolean} validity status
-	 */
-	var isValidPassword = function (val) {
-		// Test for a strong password with this regex. The password must contain one lowercase 
-		// letter, one uppercase letter, one number, and be at least 6 characters long.
-		var pattern = new RegExp("(?=^.{6,}$)((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.*");
-		return !pattern.test(val);
-	};
-	
-	/**
-	 * Digits validation.
-	 * 
-	 * @param {Object} val Input value
-	 * 
-	 * @return {Boolean} validity status
-	 */
-	var isValidDigits = function (val) {
-		// This regex will test for digits (whole numbers).
-		var pattern = new RegExp('^[0-9]+$');
-		return !pattern.test(val);
-	};
-	
-	/**
-	 * Social Security Number validation.
-	 * 
-	 * @param {Object} val Input value
-	 * 
-	 * @return {Boolean} validity status
-	 */
-	var isValidSocialSecurityNumber = function (val) {
-		// If you need to validate US Social Security Numbers, use this regular expression
-		var pattern = new RegExp('/^([0-9]{3}[-]*[0-9]{2}[-]*[0-9]{4})*$/');
-		return !pattern.test(val);
+	var isValidType = function (type, el) {
+		var pattern = new RegExp(types[type].pattern);
+		return pattern.test($(el).val());
 	};
 
 })(jQuery);
