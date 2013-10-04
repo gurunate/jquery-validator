@@ -23,27 +23,27 @@ describe("Zip Type Field Validation", function() {
 		attributes = {};
 	});
 
-	it("zip should be required and valid", function() {
+	it("zip should be required and is valid", function() {
 		fixture.append($('<input/>', attributes));
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 
-	it("zip should be required and invalid", function() {
+	it("zip should be required and is invalid", function() {
 		attributes.value = 'notazip';
 		fixture.append($('<input/>', attributes));
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).not.toEqual(0);
 	});
 
-	it("zip should NOT be required and valid", function() {
+	it("zip should NOT be required and is valid", function() {
 		attributes['data-validator'] = 'zip';
 		fixture.append($('<input/>', attributes));
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 
-	it("zip should NOT be required and empty (optional)", function() {
+	it("zip should NOT be required and is empty (optional)", function() {
 		attributes['data-validator'] = 'zip';
 		delete attributes.value;
 		var l = $('<input/>', attributes);

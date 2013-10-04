@@ -176,6 +176,19 @@
 				});
 			}
 			
+			if (!_this.errors.length) {
+				// find & validate all password inputs
+				element.find('[data-validator~=password]').each(function(i, el) {
+					if ($(el).attr('data-validator').match('required') && isValidPassword($(el).val()) || 
+						($(el).val() && isValidPassword($(el).val()))) {
+						_this.errors.push({
+							msg : 'Invalid password',
+							el : el
+						});
+					}
+				});
+			}
+			
 			if (typeof _this.options !== 'undefined') {
 				if (_this.errors.length && typeof _this.options.error !== 'undefined' && typeof _this.options.error === 'function') {
 					_this.options.error.call(_this, _this.errors);
@@ -196,6 +209,9 @@
 	 * @return {Boolean} validity status
 	 */
 	var isValidPhoneNumber = function (val) {
+		// This regex will validate a 10-digit North American telephone number. Separators 
+		// are not required, but can include spaces, hyphens, or periods. Parentheses 
+		// around the area code are also optional.
 		var pattern = new RegExp('^(([0-9]{1})*[- .(]*([0-9]{3})[- .)]*[0-9]{3}[- .]*[0-9]{4})+$');
 		return !pattern.test(val);
 	};
@@ -203,14 +219,13 @@
 	/**
 	 * Email address validation.
 	 * 
-	 * This email regex is not fully RFC5322-compliant, but it will validate most 
-	 * common email address formats correctly.
-	 * 
 	 * @param {Object} val Input value
 	 * 
 	 * @return {Boolean} validity status
 	 */
 	var isValidateEmailAddress = function (val) {
+		// This email regex is not fully RFC5322-compliant, but it will validate most 
+		// common email address formats correctly.
 		var pattern = new RegExp('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
 		return !pattern.test(val);
 	};
@@ -223,6 +238,7 @@
 	 * @return {Boolean} validity status
 	 */
 	var isValidURL = function (val) {
+		// This URL regex will validate most common URL formats correctly.
 		var pattern = new RegExp("(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?");
 		return !pattern.test(val);
 	};
@@ -235,6 +251,7 @@
 	 * @return {Boolean} validity status
 	 */
 	var isValidZipCode = function (val) {
+		// This regexp verifies US ZIP Codes, with an optional 4 number ZIP code extension.
 		var pattern = new RegExp('^[0-9]{5}(?:-[0-9]{4})?$');
 		return !pattern.test(val);
 	};
@@ -242,14 +259,13 @@
 	/**
 	 * Password validation.
 	 * 
-	 * Test for a strong password with this regex. The password must contain one lowercase 
-	 * letter, one uppercase letter, one number, and be at least 6 characters long.
-	 * 
 	 * @param {Object} val Input value
 	 * 
 	 * @return {Boolean} validity status
 	 */
 	var isValidPassword = function (val) {
+		// Test for a strong password with this regex. The password must contain one lowercase 
+		// letter, one uppercase letter, one number, and be at least 6 characters long.
 		var pattern = new RegExp("(?=^.{6,}$)((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.*");
 		return !pattern.test(val);
 	};
@@ -257,14 +273,26 @@
 	/**
 	 * Digits validation.
 	 * 
-	 * This regex will test for digits (whole numbers).
-	 * 
 	 * @param {Object} val Input value
 	 * 
 	 * @return {Boolean} validity status
 	 */
 	var isValidDigits = function (val) {
+		// This regex will test for digits (whole numbers).
 		var pattern = new RegExp('^[0-9]+$');
+		return !pattern.test(val);
+	};
+	
+	/**
+	 * Social Security Number validation.
+	 * 
+	 * @param {Object} val Input value
+	 * 
+	 * @return {Boolean} validity status
+	 */
+	var isValidSocialSecurityNumber = function (val) {
+		// If you need to validate US Social Security Numbers, use this regular expression
+		var pattern = new RegExp('/^([0-9]{3}[-]*[0-9]{2}[-]*[0-9]{4})*$/');
 		return !pattern.test(val);
 	};
 
