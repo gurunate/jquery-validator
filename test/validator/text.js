@@ -4,7 +4,7 @@
  * @author Nate Johnson
  */
 
-xdescribe("Text Type Field Validation", function() {
+describe("Text Type Field Validation", function() {
 
 	var fixture,
 		attributes;
@@ -14,7 +14,7 @@ xdescribe("Text Type Field Validation", function() {
 			type : 'text',
 			name : 'title',
 			value : 'this a test title',
-			'data-validator' : 'required text'
+			'data-validator' : 'required text[5,20]'
 		};
 		fixture = $('<form/>');
 	});
@@ -23,32 +23,23 @@ xdescribe("Text Type Field Validation", function() {
 		attributes = {};
 	});
 
-	it("text should be required and is valid", function() {
+	it("text should be required and is valid between 5 and 20 characters long", function() {
 		fixture.append($('<input/>', attributes));
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 
-	it("text should be required and is invalid", function() {
-		attributes.value = 'notatext';
+	it("text should be required and is invalid (too short)", function() {
+		attributes.value = 'asdf';
 		fixture.append($('<input/>', attributes));
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).not.toEqual(0);
 	});
 
-	it("text should NOT be required and is valid", function() {
-		attributes['data-validator'] = 'text';
+	it("text should be required and is invalid (too long)", function() {
+		attributes.value = 'Bacon ipsum dolor sit amet tenderloin andouille pork chop drumstick, ground round pig rump. Pastrami bresaola chuck, tenderloin meatloaf flank ribeye t-bone turducken filet mignon. Tongue shankle shoulder doner, bresaola flank short loin shank sirloin turducken spare ribs strip steak andouille. Strip steak rump fatback pork frankfurter short ribs chuck shankle ribeye kielbasa beef ribs pork loin drumstick pastrami ham. Ground round pork bacon boudin chicken ball tip kielbasa frankfurter tail ham bresaola shoulder hamburger ribeye fatback. Capicola flank leberkas, pork loin biltong turducken jerky cow t-bone.';
 		fixture.append($('<input/>', attributes));
 		fixture.validator('validate');
-		expect(fixture.validator('errors').length).toEqual(0);
-	});
-
-	it("text should NOT be required and is empty (optional)", function() {
-		attributes['data-validator'] = 'text';
-		delete attributes.value;
-		var l = $('<input/>', attributes);
-		fixture.append(l);
-		fixture.validator('validate');
-		expect(fixture.validator('errors').length).toEqual(0);
+		expect(fixture.validator('errors').length).not.toEqual(0);
 	});
 });

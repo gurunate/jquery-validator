@@ -47,6 +47,19 @@
 						<textarea name="address" id="address" data-validator="required"></textarea>
 					</p>
 					<p>
+						<label for="city">City</label>
+						<input type="text" name="city" id="city" value="" data-validator="required text[5,20]">
+					</p>
+					<p>
+						<label for="state">State</label>
+						<select name="state" id="state" data-validator="required">
+							<option value=""></option>
+							<option value="CA">California</option>
+							<option value="IL">Illinois</option>
+							<option value="NY">New York</option>
+						</select>
+					</p>
+					<p>
 						<label for="zip">Zip code</label>
 						<input type="tel" name="zip" id="zip" value="" data-validator="required zip">
 					</p>

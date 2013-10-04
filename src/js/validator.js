@@ -150,7 +150,19 @@
 				$.each(rules, function(i, r) {
 					// skip required validation, already prioritized
 					if (r !== 'required') {
-						if ((el.isRequired && !isValidType(r, el)) || 
+						var textRange = /text\[([0-9]+),([0-9]+)\]/;
+						if (textRange.test(r)) {
+							var m = textRange.exec(r),
+								val = $(el).val();
+							
+							if (val.length < m[1] || val.length > m[2]) {
+								_this.errors.push({
+									msg : ''.concat('Invalid text range: ', (val.length < m[1]) ? 'too short [min. ' + m[1] + '].' : 'too long. [max. ' + m[2] + ']'),
+									el : el
+								});
+							}
+							
+						} else if ((el.isRequired && !isValidType(r, el)) || 
 							(isValidValue(el) && !isValidType(r, el))) { 
 							_this.errors.push({
 								msg : types[r].msg,
