@@ -23,3 +23,8 @@ label.checkbox {
 	padding-top: 2px;
 	text-align: left;
 }
+
+input.error {
+	border: 1px dotted red;
+}
+}

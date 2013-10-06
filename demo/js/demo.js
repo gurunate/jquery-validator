@@ -1,20 +1,27 @@
 $(function() {
 	
+	var errors = [];
 	$('form').validator({
 		submit : false,
 		success : function() {
 			console.debug('form is valid');
 		},
-		error : function(errors) {
-			console.debug(errors);
+		error : function(errs) {
+			errors = errs;
 			$.each(errors, function(i, er){
-				$(er.el).css('border', '1px solid red');
+				$(er.el).addClass('error');
 			});
 		}
 	});
 	
-	// $('form').validator('validate');
-// 	
+	$('button').on('click', function() {
+		$.each(errors, function(i, er) {
+			$(er.el).removeClass('error');
+		});
+		
+		$('form').validator('validate');
+	});
+
 	// if ($('form').isValid()) {
 		// console.log('Form is valid.');
 	// } else {
