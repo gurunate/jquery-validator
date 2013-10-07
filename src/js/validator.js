@@ -212,7 +212,7 @@
 		
 		if ($(el).attr('type') === 'checkbox' || $(el).attr('type') === 'radio') {
 			var hasChecked = false;
-			$(el).parent().find('[name=' + $(el).attr('name') + ']').each(function(i, el) {
+			$(_this).find('[name=' + $(el).attr('name') + ']').each(function(i, el) {
 				if (!hasChecked && $(el).is(':checked')) {
 					hasChecked = true;
 				}
