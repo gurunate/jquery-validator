@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 		},
 		jshint : {
 			options : jsHintOptions,
-			all : ['<%= globalConfig.src %>/js/**/*.js']
+			all : ['<%= globalConfig.src %>/js/validator.js']
 		},
 		jasmine : {
 			yourTask : {
@@ -80,7 +80,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 
-	grunt.registerTask('build', ['jasmine', 'stylus', 'uglify']);
+	grunt.registerTask('build', ['jshint', 'jasmine', 'stylus', 'uglify']);
 	grunt.registerTask('test', ['jasmine']);
+	grunt.registerTask('lint', ['jshint']);
 	grunt.registerTask('default', ['build']);
 };

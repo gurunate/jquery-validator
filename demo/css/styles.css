@@ -24,7 +24,6 @@ label.checkbox {
 	text-align: left;
 }
 
-input.error {
+.error {
 	border: 1px dotted red;
-}
 }

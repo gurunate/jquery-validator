@@ -54,10 +54,10 @@
 		"define": true,
 		"console": true,
 		"$": true,
-		"jQuery": true,
-		"CARS": true
+		"jQuery": true
 	},
 	"-W015": true,
 	"-W099": true,
-	"-W041": true
+	"-W041": true,
+	"-W044": false
 }

@@ -54,6 +54,8 @@
 				var defaults = {
 					mode : 'prod',
 					submit : true,
+					before : null,
+					after : null,
 					success : null,
 					error : null
 				};
@@ -83,14 +85,17 @@
 				switch (options) {
 					case 'validate':
 						return _this.validate(this);
-						break;
 
 					case 'errors':
 						return _this.getErrors(this);
-						break;
 				}
 			}
 		},
+		/**
+		 * Return validation status.
+		 * 
+		 * @return {Boolean} validity status 
+		 */
 		isValid : function () {
 			if (typeof this.errors === 'undefined') {
 				this.validate($(this));
@@ -119,6 +124,14 @@
 		 * @param {Object} element Target DOM element  
 		 */
 		validate : function (element) {
+			
+			// invoke 'before' callback
+			if (typeof _this.options !== 'undefined') {
+				if (typeof _this.options.before !== 'undefined' && typeof _this.options.before === 'function') {
+					_this.options.before.call(_this);
+				}
+			}
+				
 			_this.hasValidated = true;
 			_this.errors = [];
 			_this.warnings = [];
