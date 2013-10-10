@@ -19,20 +19,16 @@ $(function() {
 			});
 			
 			errors[0].el.focus();
+		},
+		rules : {
+			cityState : {
+				msg : 'Invalid city state.',
+				rule : function(val) {
+					// TODO check if comma and state length
+					return (val === 'test');
+				}
+			}
 		}
 	});
-	
-	// $('button').on('click', function() {
-		// $.each(errors, function(i, er) {
-			// $(er.el).removeClass('error');
-		// });
-// 		
-		// $('form').validator('validate');
-	// });
 
-	// if ($('form').isValid()) {
-		// console.log('Form is valid.');
-	// } else {
-		// console.log('Form is NOT valid.');
-	// }
 });

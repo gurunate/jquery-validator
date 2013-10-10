@@ -33,7 +33,6 @@ describe("Password Type Field Validation", function() {
 		attributes.value = 'notapassword';
 		fixture.append($('<input/>', attributes));
 		fixture.validator('validate');
-		console.log(fixture.validator('errors').length);
 		expect(fixture.validator('errors').length).not.toEqual(0);
 	});
 

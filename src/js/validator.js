@@ -11,34 +11,34 @@
 	'use strict';
 	
 	var _this,
-		types = {
+		rules = {
 			phone : {
 				msg : 'Phone number is invalid.',
-				pattern : '^(([0-9]{1})*[- .(]*([0-9]{3})[- .)]*[0-9]{3}[- .]*[0-9]{4})+$'
+				rule : '^(([0-9]{1})*[- .(]*([0-9]{3})[- .)]*[0-9]{3}[- .]*[0-9]{4})+$'
 			},
 			email : {
 				msg : 'Email address is invalid.',
-				pattern : '^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$'
+				rule : '^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$'
 			},
 			url : {
 				msg : 'URL is invalid.',
-				pattern : "(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?"
+				rule : "(http|ftp|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?"
 			},
 			zip : {
 				msg : 'Zip code is invalid.',
-				pattern : '^[0-9]{5}(?:-[0-9]{4})?$'
+				rule : '^[0-9]{5}(?:-[0-9]{4})?$'
 			},
 			password : {
 				msg : 'Password is invalid.',
-				pattern : "(?=^.{6,}$)((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.*"
+				rule : "(?=^.{6,}$)((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.*"
 			},
 			digits : {
 				msg : 'Digits are invalid.',
-				pattern : '^[0-9]+$'
+				rule : '^[0-9]+$'
 			},
 			ssn : {
 				msg : 'Social Security Number is invalid.',
-				pattern : '/^([0-9]{3}[-]*[0-9]{2}[-]*[0-9]{4})*$/'
+				rule : '/^([0-9]{3}[-]*[0-9]{2}[-]*[0-9]{4})*$/'
 			}
 		};
 
@@ -57,7 +57,8 @@
 					before : null,
 					after : null,
 					success : null,
-					error : null
+					error : null,
+					rules : null
 				};
 
 				// implement user options				
@@ -144,11 +145,11 @@
 			
 			// iterate over all validator input fields
 			element.find('[data-validator]').each(function(i, el) {
-				var rules = $(el).attr('data-validator').split(' ');
+				var directives = $(el).attr('data-validator').split(' ');
 				el.isRequired = false;
 				
 				// validate required fields
-				if (rules.indexOf('required') >= 0) {
+				if (directives.indexOf('required') >= 0) {
 					el.isRequired = true;
 					
 					if (!isValidValue(el)) {
@@ -160,7 +161,7 @@
 				}
 				
 				// validate field types
-				$.each(rules, function(i, r) {
+				$.each(directives, function(i, r) {
 					// skip required validation, already prioritized
 					if (r !== 'required') {
 						var textRange = /text\[([0-9]+),([0-9]+)\]/;
@@ -178,7 +179,7 @@
 						} else if ((el.isRequired && !isValidType(r, el)) || 
 							(isValidValue(el) && !isValidType(r, el))) { 
 							_this.errors.push({
-								msg : types[r].msg,
+								msg : _this.options.rules[r] || rules[r].msg,
 								el : el
 							});
 						}
@@ -236,8 +237,30 @@
 	 * @return {Boolean} validity status
 	 */
 	var isValidType = function (type, el) {
-		var pattern = new RegExp(types[type].pattern);
-		return pattern.test($(el).val());
+		var retval = true;
+		
+		// evaluate custom rule
+		if (typeof _this.options.rules !== 'undefined' && typeof _this.options.rules[type] !== 'undefined') {
+			if (typeof _this.options.rules[type].rule === 'function') {
+				retval = _this.options.rules[type].rule.call(_this, $(el).val());
+			} else {
+				var rule = new RegExp(_this.options.rules[type].rule);
+				retval = rule.test($(el).val());
+			}
+			
+			_this.options.rules[type].msg = _this.options.rules[type].msg || 'Invalid field.';
+		
+		// evaluate native rule
+		} else if (typeof rules[type] !== 'undefined') {
+			var rule = new RegExp(rules[type].rule);
+			retval = rule.test($(el).val());
+			
+		// warn unsupported rule
+		} else {
+			console.warn('Unsupported rule type: ', type);
+		}
+			
+		return retval;
 	};
 
 })(jQuery);
