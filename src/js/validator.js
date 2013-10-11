@@ -179,7 +179,7 @@
 						} else if ((el.isRequired && !isValidType(r, el)) || 
 							(isValidValue(el) && !isValidType(r, el))) { 
 							_this.errors.push({
-								msg : _this.options.rules[r] || rules[r].msg,
+								msg : (typeof _this.options !== 'undefined' && typeof _this.options.rules !== 'undefined') ? _this.options.rules[r] || rules[r].msg : rules[r].msg,
 								el : el
 							});
 						}
@@ -240,7 +240,9 @@
 		var retval = true;
 		
 		// evaluate custom rule
-		if (typeof _this.options.rules !== 'undefined' && typeof _this.options.rules[type] !== 'undefined') {
+		if (typeof _this.options !== 'undefined' && 
+			typeof _this.options.rules !== 'undefined' && 
+			typeof _this.options.rules[type] !== 'undefined') {
 			if (typeof _this.options.rules[type].rule === 'function') {
 				retval = _this.options.rules[type].rule.call(_this, $(el).val());
 			} else {
