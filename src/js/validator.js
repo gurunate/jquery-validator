@@ -58,7 +58,8 @@
 					after : null,
 					success : null,
 					error : null,
-					rules : null
+					rules : null,
+          novalidate: true
 				};
 
 				// implement user options				
@@ -73,6 +74,10 @@
 
 				// plug-in magic below
 				return this.each(function() {
+					if (_this.options.novalidate) {
+            $(this).attr("novalidate", "novalidate");
+          }
+
 					$(this).on('submit', function(ev) {
 						if (!_this.options.submit) {
 							ev.preventDefault();
@@ -237,7 +242,8 @@
 	 * @return {Boolean} validity status
 	 */
 	var isValidType = function (type, el) {
-		var retval = true;
+		var retval = true,
+      rule;
 		
 		// evaluate custom rule
 		if (typeof _this.options !== 'undefined' && 
@@ -246,7 +252,7 @@
 			if (typeof _this.options.rules[type].rule === 'function') {
 				retval = _this.options.rules[type].rule.call(_this, $(el).val());
 			} else {
-				var rule = new RegExp(_this.options.rules[type].rule);
+				rule = new RegExp(_this.options.rules[type].rule);
 				retval = rule.test($(el).val());
 			}
 			
@@ -254,7 +260,7 @@
 		
 		// evaluate native rule
 		} else if (typeof rules[type] !== 'undefined') {
-			var rule = new RegExp(rules[type].rule);
+			rule = new RegExp(rules[type].rule);
 			retval = rule.test($(el).val());
 			
 		// warn unsupported rule
