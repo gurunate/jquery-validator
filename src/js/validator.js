@@ -58,7 +58,8 @@
 					after : null,
 					success : null,
 					error : null,
-					rules : null
+					rules : null,
+          novalidate: true
 				};
 
 				// implement user options				
@@ -73,6 +74,10 @@
 
 				// plug-in magic below
 				return this.each(function() {
+					if (_this.options.novalidate) {
+            $(this).attr("novalidate", "novalidate");
+          }
+
 					$(this).on('submit', function(ev) {
 						if (!_this.options.submit) {
 							ev.preventDefault();
