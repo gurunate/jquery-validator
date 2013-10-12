@@ -58,6 +58,7 @@
 					after : null,
 					success : null,
 					error : null,
+					novalidate : true,
 					rules : null
 				};
 
@@ -70,6 +71,15 @@
 				 * 2. Denotes element as active validator participant
 				 */
 				$(this).data('validator', this.options);
+				
+				if (this.options.mode === 'dev') {
+					console.warn('Dev mode is ON.');
+				}
+
+				// inject novalidate to prevent double validation
+				if (this.options.novalidate === true && this[0].tagName === 'FORM') {
+					$(this).attr('novalidate', true);
+				}
 
 				// plug-in magic below
 				return this.each(function() {
@@ -170,6 +180,8 @@
 								val = $(el).val();
 							
 							if (val.length < m[1] || val.length > m[2]) {
+								
+								// capture error
 								_this.errors.push({
 									msg : ''.concat('Invalid text range: ', (val.length < m[1]) ? 'too short [min. ' + m[1] + '].' : 'too long. [max. ' + m[2] + ']'),
 									el : el
@@ -177,7 +189,9 @@
 							}
 							
 						} else if ((el.isRequired && !isValidType(r, el)) || 
-							(isValidValue(el) && !isValidType(r, el))) { 
+									(isValidValue(el) && !isValidType(r, el))) {
+										 
+							// capture error
 							_this.errors.push({
 								msg : (typeof _this.options !== 'undefined' && typeof _this.options.rules !== 'undefined') ? _this.options.rules[r] || rules[r].msg : rules[r].msg,
 								el : el
@@ -211,6 +225,7 @@
 	var isValidValue = function (el) {
 		var retval = true;
 		
+		// verify checkbox & radio inputs
 		if ($(el).attr('type') === 'checkbox' || $(el).attr('type') === 'radio') {
 			var hasChecked = false;
 			$(_this).find('[name=' + $(el).attr('name') + ']').each(function(i, el) {
@@ -222,9 +237,12 @@
 			if (!hasChecked) {
 				retval = false;
 			}
+			
+		// verify field value
 		} else if ($(el).val() === '') {
 			retval = false;
 		}
+		
 		return retval;
 	};
 	
@@ -243,26 +261,39 @@
 		if (typeof _this.options !== 'undefined' && 
 			typeof _this.options.rules !== 'undefined' && 
 			typeof _this.options.rules[type] !== 'undefined') {
-			if (typeof _this.options.rules[type].rule === 'function') {
-				retval = _this.options.rules[type].rule.call(_this, $(el).val());
-			} else {
-				var rule = new RegExp(_this.options.rules[type].rule);
-				retval = rule.test($(el).val());
-			}
+			
+			retval = evaluateRule(_this.options.rules[type].rule, $(el).val());
 			
 			_this.options.rules[type].msg = _this.options.rules[type].msg || 'Invalid field.';
 		
 		// evaluate native rule
 		} else if (typeof rules[type] !== 'undefined') {
-			var rule = new RegExp(rules[type].rule);
-			retval = rule.test($(el).val());
+			retval = evaluateRule(rules[type].rule, $(el).val());
 			
 		// warn unsupported rule
 		} else {
-			console.warn('Unsupported rule type: ', type);
+			if (_this.options.mode === 'dev') {
+				console.warn('Unsupported rule type: ', type);
+			}
 		}
 			
 		return retval;
+	};
+	
+	/**
+	 * Evaluate the rule as either a function or RegExp pattern.
+	 * 
+ 	 * @param {Object} rule The rule type.
+	 */
+	var evaluateRule = function (rule, val) {
+		// invoke function
+		if (typeof rule === 'function') {
+			return rule.call(_this, val);
+
+		// test regex pattern
+		} else {
+			return RegExp(rule).test(val);
+		}
 	};
 
 })(jQuery);
