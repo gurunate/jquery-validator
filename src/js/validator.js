@@ -136,6 +136,11 @@
 		 */
 		validate : function (element) {
 			
+			_this.hasValidated = true;
+			_this.errors = [];
+			_this.warnings = [];
+			_this.options = _this.options || element.data('validator');
+			
 			// invoke 'before' callback
 			if (typeof _this.options !== 'undefined') {
 				if (typeof _this.options.before !== 'undefined' && typeof _this.options.before === 'function') {
@@ -143,11 +148,6 @@
 				}
 			}
 				
-			_this.hasValidated = true;
-			_this.errors = [];
-			_this.warnings = [];
-			_this.options = _this.options || element.data('validator');
-			
 			// add empty options warning
 			if (!_this.options) {
 				_this.warnings.push('No validator options.');
