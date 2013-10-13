@@ -292,7 +292,7 @@
 
 		// test regex pattern
 		} else {
-			return RegExp(rule).test(val);
+			return new RegExp(rule).test(val);
 		}
 	};
 
