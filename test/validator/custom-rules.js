@@ -44,21 +44,21 @@ describe("Custom Rule Validation", function() {
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 
-	it("city & state should be required and is invalid (no state)", function() {
+	it("city & state should be required and is invalid [no state]", function() {
 		attributes.value = 'chicago';
 		fixture.append($('<input/>', attributes));
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).not.toEqual(0);
 	});
 
-	it("city & state should be required and is invalid (no city)", function() {
+	it("city & state should be required and is invalid [no city]", function() {
 		attributes.value = ', IL';
 		fixture.append($('<input/>', attributes));
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).not.toEqual(0);
 	});
 
-	it("city & state should not be required and is valid (optional)", function() {
+	it("city & state should NOT be required and is valid (optional)", function() {
 		attributes.value = 'Chicago, IL';
 		attributes['data-validator'] = 'cityState';
 		
@@ -67,7 +67,7 @@ describe("Custom Rule Validation", function() {
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
-	it("city & state is empty but should not be required and is valid (optional)", function() {
+	it("city & state is empty but should NOT be required and is valid (optional)", function() {
 		attributes.value = '';
 		attributes['data-validator'] = 'cityState';
 		
@@ -76,7 +76,7 @@ describe("Custom Rule Validation", function() {
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 
-	it("city & state should not be required and is invalid (optional)", function() {
+	it("city & state should NOT be required and is invalid (optional)", function() {
 		attributes.value = 'Chicago';
 		attributes['data-validator'] = 'cityState';
 		

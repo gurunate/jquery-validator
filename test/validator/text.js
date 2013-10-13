@@ -29,17 +29,26 @@ describe("Text Type Field Validation", function() {
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 
-	it("text should be required and is invalid (too short)", function() {
+	it("text should be required and is invalid [too short]", function() {
 		attributes.value = 'asdf';
 		fixture.append($('<input/>', attributes));
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).not.toEqual(0);
 	});
 
-	it("text should be required and is invalid (too long)", function() {
+	it("text should be required and is invalid [too long]", function() {
 		attributes.value = 'Bacon ipsum dolor sit amet tenderloin andouille pork chop drumstick, ground round pig rump. Pastrami bresaola chuck, tenderloin meatloaf flank ribeye t-bone turducken filet mignon. Tongue shankle shoulder doner, bresaola flank short loin shank sirloin turducken spare ribs strip steak andouille. Strip steak rump fatback pork frankfurter short ribs chuck shankle ribeye kielbasa beef ribs pork loin drumstick pastrami ham. Ground round pork bacon boudin chicken ball tip kielbasa frankfurter tail ham bresaola shoulder hamburger ribeye fatback. Capicola flank leberkas, pork loin biltong turducken jerky cow t-bone.';
 		fixture.append($('<input/>', attributes));
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).not.toEqual(0);
+	});
+	
+	it("text should NOT be required and is valid (optional)", function() {
+		attributes.value = 'Bacon ipsum dolor sit amet tenderloin andouille pork chop drumstick, ground round pig rump. Pastrami bresaola chuck, tenderloin meatloaf flank ribeye t-bone turducken filet mignon. Tongue shankle shoulder doner, bresaola flank short loin shank sirloin turducken spare ribs strip steak andouille. Strip steak rump fatback pork frankfurter short ribs chuck shankle ribeye kielbasa beef ribs pork loin drumstick pastrami ham. Ground round pork bacon boudin chicken ball tip kielbasa frankfurter tail ham bresaola shoulder hamburger ribeye fatback. Capicola flank leberkas, pork loin biltong turducken jerky cow t-bone.';
+		attributes['data-validator'] = 'text[10,1000]';
+		
+		fixture.append($('<input/>', attributes));
+		fixture.validator('validate');
+		expect(fixture.validator('errors').length).toEqual(0);
 	});
 });

@@ -17,7 +17,7 @@ describe("Required Field Validation", function() {
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
-	it("text field should not be required", function() {
+	it("text field should NOT be required", function() {
 		fixture.append('"<input type="text" name="name" value="" />');
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).not.toBeGreaterThan(0);
@@ -29,7 +29,7 @@ describe("Required Field Validation", function() {
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
-	it("textarea field should not be required", function() {
+	it("textarea field should NOT be required", function() {
 		fixture.append('"<textarea name="address"></textarea>');
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).not.toBeGreaterThan(0);
@@ -52,7 +52,7 @@ describe("Required Field Validation", function() {
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
-	it("a checkbox field should not be required", function() {
+	it("a checkbox field should NOT be required", function() {
 		fixture.append(
 			'"<input type="checkbox" name="color" value="red" />' +
 			'"<input type="checkbox" name="color" value="blue" />' +
@@ -63,7 +63,7 @@ describe("Required Field Validation", function() {
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
-	it("a radio field should be required", function() {
+	it("at least one radio field from a set should be required", function() {
 		fixture.append(
 			'"<input type="checkbox" name="color" value="red" data-validator="required" />' +
 			'"<input type="checkbox" name="color" value="blue" />' +
@@ -74,13 +74,13 @@ describe("Required Field Validation", function() {
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
-	it("radio field should be required", function() {
+	it("a single radio field should be required", function() {
 		fixture.append('"<input type="checkbox" name="terms" value="yes" data-validator="required" checked />');
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
 	
-	it("a radio field should not be required", function() {
+	it("no radio field from a set should NOT be required", function() {
 		fixture.append(
 			'"<input type="checkbox" name="color" value="red" />' +
 			'"<input type="checkbox" name="color" value="blue" />' +
