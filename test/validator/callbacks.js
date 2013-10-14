@@ -25,7 +25,7 @@ describe("Callback Functionality", function() {
 		attributes = {};
 	});
 
-	it("before callback to be called on valid form validation", function() {
+	it("before callback to be called on a valid form", function() {
 		var validator = fixture.validator({
 			before : function() { }
 		});
@@ -35,7 +35,7 @@ describe("Callback Functionality", function() {
 		expect(validator.options.before).toHaveBeenCalled();
 	});
 	
-	it("success callback to be called on valid form validation", function() {
+	it("success callback to be called on a valid form", function() {
 		var validator = fixture.validator({
 			success : function() { }
 		});
@@ -45,7 +45,7 @@ describe("Callback Functionality", function() {
 		expect(validator.options.success).toHaveBeenCalled();
 	});
 	
-	it("error callback NOT to be called on valid form validation", function() {
+	it("error callback NOT to be called on a valid form", function() {
 		var validator = fixture.validator({
 			error : function() { }
 		});
@@ -53,6 +53,18 @@ describe("Callback Functionality", function() {
 		spyOn(validator.options, 'error');
 		fixture.validator('validate');
 		expect(validator.options.error).not.toHaveBeenCalled();
+	});
+	
+	it("error callback to be called on an invalid form", function() {
+		fixture.append('"<input type="text" name="name" value="" data-validator="required" />');
+		
+		var validator = fixture.validator({
+			error : function() { }
+		});
+		
+		spyOn(validator.options, 'error');
+		fixture.validator('validate');
+		expect(validator.options.error).toHaveBeenCalled();
 	});
 
 });
