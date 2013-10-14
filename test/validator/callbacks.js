@@ -19,22 +19,40 @@ describe("Callback Functionality", function() {
 		};
 		
 		fixture = $('<form/>');
-		
-		validator = fixture.validator({
-			before : function() {
-				console.log('before called'); 
-			}
-		});
 	});
 
 	afterEach(function() {
 		attributes = {};
 	});
 
-	it("callback executed before form validation", function() {
+	it("before callback to be called on valid form validation", function() {
+		var validator = fixture.validator({
+			before : function() { }
+		});
+		
 		spyOn(validator.options, 'before');
 		fixture.validator('validate');
 		expect(validator.options.before).toHaveBeenCalled();
+	});
+	
+	it("success callback to be called on valid form validation", function() {
+		var validator = fixture.validator({
+			success : function() { }
+		});
+		
+		spyOn(validator.options, 'success');
+		fixture.validator('validate');
+		expect(validator.options.success).toHaveBeenCalled();
+	});
+	
+	it("error callback NOT to be called on valid form validation", function() {
+		var validator = fixture.validator({
+			error : function() { }
+		});
+		
+		spyOn(validator.options, 'error');
+		fixture.validator('validate');
+		expect(validator.options.error).not.toHaveBeenCalled();
 	});
 
 });
