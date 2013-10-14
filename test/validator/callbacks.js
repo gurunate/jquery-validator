@@ -21,7 +21,9 @@ describe("Callback Functionality", function() {
 		fixture = $('<form/>');
 		
 		validator = fixture.validator({
-			before : function() { }
+			before : function() {
+				console.log('before called'); 
+			}
 		});
 	});
 
@@ -32,6 +34,7 @@ describe("Callback Functionality", function() {
 	it("callback executed before form validation", function() {
 		spyOn(validator.options, 'before');
 		fixture.validator('validate');
+		expect(validator.options.before).toHaveBeenCalled();
 	});
 
 });
