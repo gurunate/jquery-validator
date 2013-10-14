@@ -56,7 +56,7 @@ describe("Callback Functionality", function() {
 	});
 	
 	it("error callback to be called on an invalid form", function() {
-		fixture.append('"<input type="text" name="name" value="" data-validator="required" />');
+		fixture.append($('<input/>', attributes));
 		
 		var validator = fixture.validator({
 			error : function() { }
