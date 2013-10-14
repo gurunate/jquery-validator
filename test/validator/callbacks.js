@@ -1,5 +1,5 @@
 /**
- * Unit test for text code validation
+ * Unit test for callback validation
  *
  * @author Nate Johnson
  */
