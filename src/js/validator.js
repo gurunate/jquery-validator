@@ -2,7 +2,7 @@
  * validator - Form validation with jQuery
  * 
  * @author Nate Johnson
- * @version 0.2.0
+ * @version 0.3.0
  * @license Released under the MIT license
  */
 
@@ -83,6 +83,10 @@
 
 				// plug-in magic below
 				return this.each(function() {
+					if (_this.options.novalidate) {
+            $(this).attr("novalidate", "novalidate");
+          }
+
 					$(this).on('submit', function(ev) {
 						if (!_this.options.submit) {
 							ev.preventDefault();
@@ -255,13 +259,14 @@
 	 * @return {Boolean} validity status
 	 */
 	var isValidType = function (type, el) {
-		var retval = true;
+		var retval = true,
+      rule;
 		
 		// evaluate custom rule
 		if (typeof _this.options !== 'undefined' && 
 			typeof _this.options.rules !== 'undefined' && 
 			typeof _this.options.rules[type] !== 'undefined') {
-			
+
 			retval = evaluateRule(_this.options.rules[type].rule, $(el).val());
 			
 			_this.options.rules[type].msg = _this.options.rules[type].msg || 'Invalid field.';
