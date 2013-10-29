@@ -79,9 +79,9 @@
 				if (this.options.mode === 'dev') {
 					console.warn('Dev mode is ON.');
 				}
-
+				
 				// inject novalidate to prevent double validation
-				if (this.options.novalidate === true && this[0].tagName === 'FORM') {
+				if (this.options.novalidate === true && typeof this[0] !== 'undefined' && this[0] !== null && this[0].tagName === 'FORM') {
 					$(this).attr('novalidate', true);
 				}
 
