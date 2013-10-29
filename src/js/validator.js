@@ -201,7 +201,7 @@
 										 
 							// capture error
 							_this.errors.push({
-								msg : (typeof _this.options !== 'undefined' && typeof _this.options.rules !== 'undefined') ? _this.options.rules[r] || rules[r].msg : rules[r].msg,
+								msg : (typeof _this.options !== 'undefined' && _this.options !== null && typeof _this.options.rules !== 'undefined' && _this.options.rules !== null) ? _this.options.rules[r] || rules[r].msg : rules[r].msg,
 								el : el
 							});
 						}
@@ -264,11 +264,16 @@
 	 */
 	var isValidType = function (type, el) {
 		var retval = true,
-      rule;
+			rule;
+// 			
+		// console.log(_this.options);
+		// console.log(_this.options.rules);
+		// console.log(type);
+		// console.log(_this.options.rules[type]);
 		
 		// evaluate custom rule
-		if (typeof _this.options !== 'undefined' && 
-			typeof _this.options.rules !== 'undefined' && 
+		if (typeof _this.options !== 'undefined' && _this.options !== null &&
+			typeof _this.options.rules !== 'undefined' && _this.options.rules !== null &&
 			typeof _this.options.rules[type] !== 'undefined') {
 
 			retval = evaluateRule(_this.options.rules[type].rule, $(el).val());
