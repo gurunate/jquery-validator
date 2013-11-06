@@ -43,6 +43,10 @@
 			nohtml : {
 				msg : 'Text is invalid. Contains HTML.',
 				rule : '/(<([^>]+)>)/'
+			},
+			sameAs : {
+				msg : 'Field does not match.',
+				rule : /^sameAs\((.*?)\)/
 			}
 		};
 
@@ -163,7 +167,7 @@
 			
 			// iterate over all validator input fields
 			element.find('[data-validator]').each(function(i, el) {
-				var directives = $(el).attr('data-validator').split(' ');
+				var directives = parseDirectives($(el).attr('data-validator'));
 				el.isRequired = false;
 				
 				// validate required fields
@@ -198,12 +202,22 @@
 							
 						} else if ((el.isRequired && !isValidType(r, el)) || 
 									(isValidValue(el) && !isValidType(r, el))) {
-										 
-							// capture error
-							_this.errors.push({
-								msg : (typeof _this.options !== 'undefined' && _this.options !== null && typeof _this.options.rules !== 'undefined' && _this.options.rules !== null) ? _this.options.rules[r] || rules[r].msg : rules[r].msg,
-								el : el
-							});
+						
+							// hack for 'sameAs' directive (below)
+							if (rules['sameAs'].rule.test(r)) {
+								// capture error
+								_this.errors.push({
+									msg : rules['sameAs'].msg,
+									el : el
+								});
+							} else {
+								// capture error
+								_this.errors.push({
+									msg : (typeof _this.options !== 'undefined' && _this.options !== null && typeof _this.options.rules !== 'undefined' && _this.options.rules !== null) ? _this.options.rules[r] || rules[r].msg : rules[r].msg,
+									el : el
+								});
+							}
+							
 						}
 					}
 				});
@@ -222,6 +236,47 @@
 			return this;
 		}
 	});
+	
+	/**
+	 * Parse the validation directives string
+	 * 
+	 * @param {String} di Directives
+	 * 
+	 * @return {Array} directives
+	 */
+	var parseDirectives = function(di) {
+		var retval = [],
+			arr = di.split(/\s/), 
+			isSameAs = false, 
+			directive = null;
+
+		for (var i = 0; i < arr.length; i++) {
+			if (/^sameAs\(/.test(arr[i]) && !/\)$/.test(arr[i])) {
+				isSameAs = true;
+				if (directive) {
+					directive = ''.concat(directive, ' ', arr[i]);
+				} else {
+					directive = arr[i];
+				}
+
+			} else if (isSameAs) {
+				if (/\)$/.test(arr[i])) {
+					retval.push(''.concat(directive, ' ', arr[i]));
+					directive = null;
+					isSameAs = false;
+				} else {
+					directive = ''.concat(directive, ' ', arr[i]);
+				}
+
+			} else {
+				retval.push(arr[i]);
+			}
+
+		}
+
+		return retval;
+	}; 
+
 	
 	/**
 	 * Value validation.
@@ -264,13 +319,9 @@
 	 */
 	var isValidType = function (type, el) {
 		var retval = true,
-			rule;
-// 			
-		// console.log(_this.options);
-		// console.log(_this.options.rules);
-		// console.log(type);
-		// console.log(_this.options.rules[type]);
-		
+			rule,
+			sameAs = rules['sameAs'].rule;
+			
 		// evaluate custom rule
 		if (typeof _this.options !== 'undefined' && _this.options !== null &&
 			typeof _this.options.rules !== 'undefined' && _this.options.rules !== null &&
@@ -284,9 +335,20 @@
 		} else if (typeof rules[type] !== 'undefined') {
 			retval = evaluateRule(rules[type].rule, $(el).val());
 			
+		} else if (sameAs.test(type)) {
+			var m = sameAs.exec(type),
+				selector = null;
+			
+			if (m.length) {
+				selector = m[1].replace(/"/g, "'");
+				selector = selector.replace(/'/g, '');
+			}
+			
+			retval = ($(el).val() === $(selector).val());
+			
 		// warn unsupported rule
 		} else {
-			if (_this.options.mode === 'dev') {
+			if (typeof _this.options.mode !== 'undefined' && _this.options.mode === 'dev') {
 				console.warn('Unsupported rule type: ', type);
 			}
 		}
