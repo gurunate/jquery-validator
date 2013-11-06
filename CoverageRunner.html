@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <title>Jasmine Coverage Runner</title>
+
+  <link rel="stylesheet" type="text/css" href=".grunt/grunt-contrib-jasmine/jasmine.css">
+  <script type="text/javascript" src=".grunt/grunt-contrib-jasmine/jasmine.js"></script>
+  <script type="text/javascript" src=".grunt/grunt-contrib-jasmine/jasmine-html.js"></script>
+
+  <script type="text/javascript" 
+          data-cover-only="src/" 
+          data-cover-never="src/js/libs" 
+          src="src/js/libs/blanket.min.js" 
+          data-cover-adapter="src/js/libs/jasmine-blanket.js"></script>
+  
+  <!-- include source files here... -->
+  <script type="text/javascript" src="src/js/libs/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="src/js/validator.js"></script>
+  
+  <!-- include spec files here... -->
+  <script type="text/javascript" src="test/validator/email.js" ></script>
+  <script type="text/javascript" src="test/validator/password.js" ></script>
+  <script type="text/javascript" src="test/validator/phone.js" ></script>
+  <script type="text/javascript" src="test/validator/required.js" ></script>
+  <script type="text/javascript" src="test/validator/text.js" ></script>
+  <script type="text/javascript" src="test/validator/url.js" ></script>
+  <script type="text/javascript" src="test/validator/zip.js" ></script>
+
+  <script type="text/javascript">
+    (function() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var htmlReporter = new jasmine.HtmlReporter();
+
+      jasmineEnv.addReporter(htmlReporter);
+      
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
+    })();
+  </script>
+
+</head>
+
+<body>
+</body>
+</html>
