@@ -204,10 +204,10 @@
 									(isValidValue(el) && !isValidType(r, el))) {
 						
 							// hack for 'sameAs' directive (below)
-							if (rules['sameAs'].rule.test(r)) {
+							if (rules.sameAs.rule.test(r)) {
 								// capture error
 								_this.errors.push({
-									msg : rules['sameAs'].msg,
+									msg : rules.sameAs.msg,
 									el : el
 								});
 							} else {
@@ -320,7 +320,7 @@
 	var isValidType = function (type, el) {
 		var retval = true,
 			rule,
-			sameAs = rules['sameAs'].rule;
+			sameAs = rules.sameAs.rule;
 			
 		// evaluate custom rule
 		if (typeof _this.options !== 'undefined' && _this.options !== null &&
