@@ -133,7 +133,7 @@
 		 */
 		getErrors : function () {
 			if (!_this.hasValidated) {
-				if (_this.options.mode === 'dev') {
+				if (typeof _this.options !== 'undefined' && _this.options.mode === 'dev') {
 					console.warn('Errors method referenced before any validation.  Validation invoked for accuracy.');
 				}
 				_this.validate(this);
@@ -348,7 +348,7 @@
 			
 		// warn unsupported rule
 		} else {
-			if (typeof _this.options.mode !== 'undefined' && _this.options.mode === 'dev') {
+			if (typeof _this.options !== 'undefined' && typeof _this.options.mode !== 'undefined' && _this.options.mode === 'dev') {
 				console.warn('Unsupported rule type: ', type);
 			}
 		}
