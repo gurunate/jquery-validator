@@ -7,7 +7,10 @@
 describe("sameAs Functionality", function() {
 
 	var fixture,
-		attributes,
+		attributes1,
+		attributes2,
+		attributes3,
+		attributes4,
 		validator;
 
 	beforeEach(function() {
@@ -16,7 +19,7 @@ describe("sameAs Functionality", function() {
 			type : 'password',
 			name : 'password',
 			class : 'password',
-			value : 'kM85JZk8JSje',
+			value : 'myPassword',
 			'data-validator' : 'required password'
 		};
 		
@@ -24,7 +27,23 @@ describe("sameAs Functionality", function() {
 			id : 'password2',
 			type : 'password',
 			name : 'password-confirm',
-			value : 'kM85JZk8JSje',
+			value : 'myPassword',
+			'data-validator' : "required password sameAs('#password1')"
+		};
+
+		attributes3 = {
+			id : 'password3',
+			type : 'password',
+			name : 'password-confirm',
+			value : 'totallyDifferent',
+			'data-validator' : "required password sameAs('#password1')"
+		};
+		
+		attributes4 = {
+			id : 'password4',
+			type : 'password',
+			name : 'password-confirm',
+			value : 'myPasswordNot',
 			'data-validator' : "required password sameAs('#password1')"
 		};
 		
@@ -32,7 +51,10 @@ describe("sameAs Functionality", function() {
 	});
 
 	afterEach(function() {
-		attributes = {};
+		attributes1 = {};
+		attributes2 = {};
+		attributes3 = {};
+		attributes4 = {};
 		$('form').remove();
 	});
 	
@@ -53,4 +75,19 @@ describe("sameAs Functionality", function() {
 		fixture.validator('validate');
 		expect(fixture.validator('errors').length).toEqual(0);
 	});
+
+	it("input fields should be required but NOT equal to each other", function() {
+		fixture.append($('<input />', attributes1));
+		fixture.append($('<input />', attributes3));
+		fixture.validator('validate');
+		expect(fixture.validator('errors').length).toEqual(1);
+	});
+
+	it("input fields should be required but NOT equal to each other (different ending)", function() {
+		fixture.append($('<input />', attributes1));
+		fixture.append($('<input />', attributes4));
+		fixture.validator('validate');
+		expect(fixture.validator('errors').length).toEqual(1);
+	});
+
 });
