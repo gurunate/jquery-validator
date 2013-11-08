@@ -14,3 +14,6 @@ Quick and easy jQuery inline form validation.
 
 * [NodeJS](http://nodejs.org/ "node.js")
 * [Grunt](http://gruntjs.com/ "Grunt")
+
+## How to get help ##
+* Open issues in the [issue tracker](https://github.com/gurunate/jquery-validator/issues?state=open).
