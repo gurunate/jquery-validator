@@ -16,8 +16,9 @@ Quick and easy jQuery inline form validation.
 
 ## Demos ##
 
-* [Source Demo](http://localhost:3000/demo/src-demo.html "source demo")
-* [Distribution Demo](http://localhost:3000/demo/dist-demo.html "distribution demo")
+* [Demos](http://localhost:3000/demo/ "demos")
+** [Source Demo](http://localhost:3000/demo/src-demo.html "source demo")
+** [Distribution Demo](http://localhost:3000/demo/dist-demo.html "distribution demo")
 
 ## Dependencies ##
 
