@@ -77,31 +77,32 @@
 				 * 1. Preserves options for API calls
 				 * 2. Denotes element as active validator participant
 				 */
-				$(this).data('validator', this.options);
+				_this.data('validator', _this.options);
 				
-				if (this.options.mode === 'dev') {
+				if (_this.options.mode === 'dev') {
 					console.warn('Dev mode is ON.');
 				}
 				
 				// inject novalidate to prevent double validation
 				if (this.options.novalidate === true && typeof this[0] !== 'undefined' && this[0] !== null && this[0].tagName === 'FORM') {
-					$(this).attr('novalidate', true);
+					_this.attr('novalidate', true);
 				}
 
 				// plug-in magic below
-				return this.each(function() {
-					if (_this.options.novalidate) {
-            $(this).attr("novalidate", "novalidate");
-          }
+                return this.each(function() {
+                    if (_this.options.novalidate) {
+                        $(this).attr("novalidate", "novalidate");
+                    }
 
-					$(this).on('submit', function(ev) {
-						if (!_this.options.submit) {
-							ev.preventDefault();
-						}
-						
-						_this.validate($(this));
-					});
-				});
+                    $(this).on('submit', function(ev) {
+                        if (!_this.options.submit) {
+                            ev.preventDefault();
+                        }
+
+                        _this.validate($(this));
+                    });
+                });
+
 			} else {
 				// API methods
 				switch (options) {
