@@ -67,7 +67,7 @@
                  * 1. Preserves options for API calls
                  * 2. Denotes element as active validator participant
                  */
-                $(this).data('validator', this.options);
+                this.data('validator', this.options);
 
                 // plug-in magic below
                 return this.each(function() {
@@ -102,8 +102,8 @@
         isValid : function() {
             var _this = this;
 
-            if ( typeof this.errors === 'undefined') {
-                this.validate($(this));
+            if (typeof _this.errors === 'undefined') {
+                this.validate(_this);
             }
 
             return (_this.errors.length <= 0);
