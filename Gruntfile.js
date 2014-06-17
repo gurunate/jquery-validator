@@ -70,8 +70,20 @@ module.exports = function(grunt) {
 					'<%= globalConfig.dest %>/js/<%= pkg.name %>-<%= pkg.version %>.min.js' : '<%= globalConfig.src %>/js/validator.js'
 				}
 			}
+		},
+		copy : { 
+			main : { 
+				files :[
+					{
+						expand : true, 
+						flatten : true,
+						src : ['<%= globalConfig.dest %>/js/<%= pkg.name %>-<%= pkg.version %>.min.js'],
+						dest : './',
+						filter : 'isFile'
+					}
+				]
+			}
 		}
-
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-stylus');
@@ -79,8 +91,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 
-	grunt.registerTask('build', ['jshint', 'jasmine', 'stylus', 'uglify']);
+	grunt.registerTask('build', ['jshint', 'jasmine', 'stylus', 'uglify', 'copy']);
 	grunt.registerTask('test', ['jasmine']);
 	grunt.registerTask('lint', ['jshint']);
 	grunt.registerTask('default', ['build']);
